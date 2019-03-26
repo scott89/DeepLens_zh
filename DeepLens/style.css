@@ -119,4 +119,8 @@ a:hover
 {
     color: hotpink;
 }
+img,object
+{
+    max-width:100%;
 
+}
