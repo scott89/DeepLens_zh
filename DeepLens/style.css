@@ -119,7 +119,7 @@ a:hover
 {
     color: hotpink;
 }
-img,object
+img,object,iframe
 {
     max-width:100%;
 
