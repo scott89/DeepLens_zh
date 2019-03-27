@@ -47,7 +47,7 @@
 {
     font-family:"roboto",sans-serif;
     max-width:960px;
-    font-size:18px;
+    font-size:22px;
     line-height:1;
     margin-bottom:24px;
     margin-bottom:1.5rem;
@@ -60,7 +60,7 @@
     font-family:"roboto",sans-serif, "SimHei";
     max-width:700px;
     text-align:center;
-    font-size:14px;
+    font-size:15px;
     line-height:1;
     margin-bottom:24px;
     margin-bottom:1.5rem;
@@ -126,7 +126,7 @@ img,object,iframe
 .entry-wrapper >p, .fig> p, .pub-bibtex
 {
     font-family: "roboto",sans-serif, "SimHei";
-    font-size: 12px;
+    font-size: 15px;
     line-height:2.0;
     letter-spacing: 1.5px;
 }
