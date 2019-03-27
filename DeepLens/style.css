@@ -112,6 +112,12 @@ p
 {
     text-align: justify;
 }
+.author a
+{
+    text-decoration: none;
+    color: rgb(120,120,200);
+}
+
 a:hover
 {
     color: hotpink;
@@ -122,7 +128,7 @@ img,object,iframe
     padding-top: 0.5em;
 
 }
-.entry-wrapper >p, .fig> p, .pub-bibtex, .abstract
+.entry-wrapper >p, .fig> p, .pub-bibtex, .abstract, .author
 {
     font-family: "roboto",sans-serif, "SimHei";
     font-size: 18px;
