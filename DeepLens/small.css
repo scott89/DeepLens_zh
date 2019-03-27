@@ -129,7 +129,7 @@ img,object,iframe
     padding-top: 0.5em;
 }
 
-.entry-wrapper >p, .fig> p, .pub-bibtex, .absract, .author
+.entry-wrapper >p, .fig> p, .pub-bibtex, .abstract, .author
 {
     font-family: "roboto",sans-serif, "SimHei";
     font-size: 15px;
