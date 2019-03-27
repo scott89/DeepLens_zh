@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="js no-touch rgba hsla textshadow opacity svg wf-volkhov-i4-active wf-sourcecodepro-n4-active wf-sourcecodepro-n7-active wf-sourcesanspro-i2-active wf-sourcesanspro-i3-active wf-sourcesanspro-i4-active wf-sourcesanspro-i6-active wf-sourcesanspro-i7-active wf-sourcesanspro-i9-active wf-sourcesanspro-n2-active wf-sourcesanspro-n3-active wf-sourcesanspro-n4-active wf-sourcesanspro-n6-active wf-sourcesanspro-n7-active wf-sourcesanspro-n9-active wf-volkhov-i7-active wf-volkhov-n4-active wf-volkhov-n7-active wf-active gr__people_inf_ethz_ch"
+  lang="en" style="">
+<!--<![endif]-->
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>DeepLens: 单目图像浅景深效果渲染算法</title>
+  <meta name="description" content="DeepLens: 单目图像浅景深效果渲染算法>
+  <!-- Webmaster Tools verfication -->
+  <meta name="google-site-verification" content="googleb0479c04a25255c3">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+  <!-- For all browsers -->
+  <!--<link rel="stylesheet" href="./DeepLens/style.css">-->
+  <link rel="stylesheet" media="screen and (min-device-width: 1200px)" href="./DeepLens/style.css">
+  <link rel="stylesheet" media="screen and (max-device-width: 1200px)" href="./DeepLens/small.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+  <!-- Webfonts -->
+   <script src="./DeepLens/anims.js"></script>
+
+  <meta http-equiv="cleartype" content="on">
+
+</head>
+
+<body id="page" data-gr-c-s-loaded="true">
+
+  <!--<div id="main" role="main">-->
+    <article class="entry">
+      <div class="entry-wrapper">
+        <br>
+        <br>
+        <!-- <header class="entry-header">-->
+        <h1 class="entry-titleProject" style="margin-top:5px;">DeepLens: 单目图像浅景深效果渲染算法</h1>
+        <!-- </header>-->
+        <div class="entry-titleAuthors">
+          <p style="text-align:center">作者：
+          <a href="http://scholar.google.com/citations?user=EfTwkXMolscC&hl=zh-CN">王立君</a>,
+          <a href="http://ice.dlut.edu.cn/lu">卢湖川</a>
+          </p>
+          <p style='text-align:center'>大连理工大学</p>
+          <!--
+          <a href="http://scholar.google.com/citations?user=EfTwkXMolscC&hl=zh-CN">Lijun Wang</a>,
+          <a href="http://users.eecs.northwestern.edu/~xsh835/index.html">Xiaohui Shen</a>,
+          <a href="http://cs-people.bu.edu/jmzhang/">Jianming Zhang</a>,
+          <a href="http://www.oliverwang.info/">Oliver Wang</a>
+          <br> 
+          <a href="https://research.adobe.com/person/zhe-lin/">Zhe Lin</a>,
+          <a href="http://scholar.google.com/citations?user=NwSOdTQAAAAJ&hl=en">Chih-Yao Hsieh</a>,
+          <a href="https">Sarah Kong</a> and
+          <a href="http://ice.dlut.edu.cn/lu">Huchuan Lu</a>-->
+        </div>
+        <!--<div class="entry-titleVenue">
+          ACM Transactions on Graphics (Proc. SIGGRAPH Asia), 2018
+        </div>-->
+      </div>
+      <!-- /.entry-wrapper -->
+      <div class="entry-wrapper">
+          <p style="text-align:left; padding-top: 2em">
+            <b>1. 引言</b>
+          </p>
+
+          <p>
+             浅景深效果（Shallow Depth of Field）是指通过选取合适的相机焦距、光圈等参数，
+             使对焦点前后有限景深范围内的成像相对清晰，而景深外成像较为模糊的摄影效果（如<a href='#fig1'>图1</a>所示）。
+             浅景深效果的获取是摄影艺术中的重要技巧，往往依赖于昂贵的摄影设备（如单反相机），且一经拍摄后，
+             无法调整聚焦点位置和模糊程度，实现再聚焦（Refocus）。 
+          </p>
+          <div class='fig' align="center">
+            <img src="DeepLens/img/1.jpg", width=400>
+            <p style="text-align:center">图<a id='fig1'>1</a>. 浅景深效果示意图 </p>
+          </div>
+
+          <p>
+            面向上述问题，计算机视觉和图形学领域的研究人员尝试采用软件算法，为单幅全清晰图像渲染浅景深效果。
+            该类算法往往被称为图像空间的浅景深渲染算法。其基本思路是采用后处理的方式，
+            根据图像深度信息对不同像素点进行不同程度的模糊。
+            由于这种后处理的方式往往是人工预先设定的，在许多情况下效果不够理想，易造成颜色溢出，深度不连续等伪影。
+            此外，该类算法依赖额外的硬件，以设备获取场景深度信息。
+          </p>
+          <p>
+          在近期发表于ACM Transactions on Graphics (SIGGRAPH Asia Edition) 的论文中[<a href="#bib">BibTex</a>]，
+            大连理工大学与Adobe Research实验室的研究人员合作提出了一种可学习的浅景深效果渲染算法，命名为DeepLens算法。
+            该算法采用深度卷积网络，实现了从全清晰图像到浅景深图像端到端的映射，赋予用户在选择聚焦点、模糊程度方面更强自由度的同时，无需额外的深度获取设备。
+            在高质量的训练样本上学习后，该算法可以很大程度上消除图像伪影。<a href="#fig2">图2</a>与<a href="#fig3">图3</a>展示了DeepLens算法针对不同模糊尺度和聚焦位置的浅景深效果渲染结果。
+          </p>
+
+          <div class='fig' align="center">
+            <img src="DeepLens/img/2.gif", width="600">
+            <p style="text-align:center">图<a id="fig2">2</a>. DeepLens 算法针对不同模糊尺度的渲染效果 </p>
+          </div>
+
+          <div class='fig' align="center">
+            <img src="DeepLens/img/3.gif", width="600">
+            <p style="text-align:center">图<a id="fig3">3</a>. DeepLens 算法针对不同聚焦位置的渲染效果 </p>
+          </div>
+
+          <p style="text-align:left; padding-top: 2em">
+            <b>2. 网络结构</b>
+          </p>
+
+          <p>
+            DeepLens算法所采用的卷积网络由三个子模块构成，分别为深度预测 (Depth Prediction)、
+            滤镜模糊 (Lens Blur) 和引导上采样 (Guided Upsampling) 模块（如<a href="#fig4">图4</a>所示）。
+            为降低运算复杂度，首先将输入图像进行下采样，并在低分辨率预测深度图；
+            滤镜模糊模块以预测的深度图和聚焦点位置、模糊程度等参数作为输入，在低分辨率特征空间，
+            对全清晰图像进行浅景深效果的渲染；最后，上采样模块以高分辨率全清晰图像，以及低分辨率全清晰图像和深度图作为指导，
+            以递归的方式实现低分辨率浅景深图像的上采样过程。
+          </p>
+
+          <div class='fig' align="center">
+            <img src="DeepLens/img/3.jpg", width="650">
+            <p style="text-align:center">图<a id="fig4">4</a>. DeepLens 算法网络结构概览</p>
+          </div>
+
+          <p>
+          <strong>深度预测模块:</strong>如<a href="#fig5">图5</a>所示，该模块的编码网络采用预训练的 ResNet50 实现。
+            解码网络对特征不断上采样，并采用跳连的方式，集成相同分辨率的编码网络特征，从而补充网络丢失的细节特征。
+            为了增网络对物体边缘的刻画能力，同时采用深度估计和前景分割数据库，以多任务的方式对网路进行训练。
+          </p>
+          <div class='fig' align="center">
+            <img src="DeepLens/img/4.jpg", width="600">
+            <p style="text-align:center">图<a id="fig5">5</a>. 深度预测模块网络结构</p>
+          </div>
+          <p>
+            <strong>滤镜模糊模块:</strong>滤镜模糊的基本思路是采用空间变换的卷积核 (Spatially Variant Kernels) 对图像卷积，
+            实现景深外区域的模糊。网络经过学习可以根据深度图，对不同位置卷积核的模糊尺度进行预测。
+            然而，在实际应用中，这一方法的计算和空间复杂度较高，且随着最大模糊尺度二次增长。
+            为此，原文作者提出基于特征空间的滤镜模糊操作。 在特征空间中 1x1 的卷积操作，即可实现与原始图像中 64x64 大小卷积操作
+            等价的模糊程度。具体而言，滤镜模糊模块由卷积核预测网络和特征提取网络构成（参见<a href="#fig6">图6</a>）。
+            其中，卷积核预测网络根据图像深度为每一像素分别预测 1x1 的卷积核。
+            浅景深效果的渲染则通过将预测的卷积核作用在所提取的特征中实现。
+          </p>
+          <div class='fig' align="center">
+            <img src="DeepLens/img/5.jpg", width="600">
+            <p style="text-align:center">图<a id="fig6">6</a>. 滤镜模糊模块网络结构</p>
+          </div>
+          <p>
+          <strong>引导上采样模块:</strong>传统算法在对浅景深图像上采样时，难以恢复清晰的聚焦区域，甚至引入额外的伪影，因而整体效果欠佳。
+            原文作者提出引导上采样模块，通过将高分辨率全清晰图像与低分辨率浅景深图像相融合，以获取高分辨率的浅景深图像。
+            如<a href="#fig7">图7</a>所示，引导上采样模块在低分辨率和高分辨率图像中同时提取特征，并预测对应的空间权重图。
+            该权重图可以有效的区分浅景深图像中的聚焦于散焦区域，为高低分辨率图像的融合提供指导。
+          </p>
+          <div class='fig' align="center">
+            <img src="DeepLens/img/7.jpg", width="600">
+            <p style="text-align:center">图<a id="fig7">7</a>. 引导上采样模块网络结构</p>
+          </div>
+          <p style="text-align:left; padding-top: 2em">
+            <b>3. 网络训练</b>
+          </p>
+          <p>
+            深度预测模块的训练单独进行。为提升其泛化性能，采用移动端双摄像头，
+            跨城市收集了2462张不同场景的深度图像，以满足网络训练对数据多样性的要求。
+            与深度预测相比，浅景深效果渲染主要涉及低层操作，对图像语义信息的理解没有过多要求。
+            为了尽可能避免伪影，原文作者提出一种图像合成策略，用于生成全清晰和对应的浅景深图像对。
+            通过在合成数据集上的联合训练，滤镜模糊和引导上采样模块在真实图像上取得了较好的泛化能力。
+          </p>
+
+          <p style="text-align:left; padding-top: 2em">
+            <b>4. 结果展示</b>
+          </p>
+          <p style="text-align:center;">
+            <!--<iframe width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            -->
+            <iframe width=510 height="300" src='http://player.youku.com/embed/XNDExMjA2NzU0NA==' frameborder=0 allow="encrypted-media" allowfullscreen></iframe>
+            <p>如果视频无法显示请手动点击<a href="http://player.youku.com/embed/XNDExMjA2NzU0NA==">视频链接</a></p>
+
+          </p>
+          
+          <p style="text-align:left; padding-top:2em">
+            <b>5. 下载</b>
+          </p>
+          <div align="center">
+          <a href="https://arxiv.org/abs/1810.08100"><i class="far fa-file-pdf fa-4x" style="padding-right:0.35em" title="Paper"></i></a>
+          <a href="https://github.com/scott89/deeplens_eval"><i class="far fa-file-code fa-4x" style="padding-right:0.5em" title="Code"></i></a>
+          <!--
+          <br>
+          <a href="https://www.github.com/"><i class="fas fa-database fa-4x" style="padding-right:0.5em"　title="DataSet"></i></a>
+          -->
+          </div>
+
+          <p style="text-align:left; padding-top:2em">
+          <a id="bib"><b>BibTeX</b></a>
+          </p>
+          <p>
+          </p>
+          <div class="pub-bibtex">
+            @ARTICLE{deeplens2018,
+            <br> author={Wang Lijun and Shen Xiaohui and Zhang Jianming and Wang Oliver and Hsieh Chih-Yao and Kong Sarah and Lu Huchuan},
+            <br> title={DeepLens: Shallow Depth of Field from a Single Image},
+            <br> journal={ACM Trans. Graph. (Proc. SIGGRAPH Asia)},
+            <br> year={2018},
+            <br> pages = {6:1-6:11},
+            <br> volume = {37},
+            <br> number = {6}
+            <br> }
+          </div>
+          <p></p>
+
+
+</body>
+
+</html>
