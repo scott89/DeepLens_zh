@@ -120,7 +120,7 @@ a:hover
 img,object,iframe
 {
     max-width:100%;
-
+    padding-top: 0.5em;
 }
 
 .entry-wrapper >p, .fig> p, .pub-bibtex
