@@ -16,9 +16,13 @@
   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
 
   <!-- For all browsers -->
-  <link rel="stylesheet" href="./DeepLens/style.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+  <!--<link rel="stylesheet" href="./DeepLens/style.css">-->
+  <link rel="stylesheet" media="screen and (min-device-width: 800px)" href="./DeepLens/style.css">
+  <link rel="stylesheet" media="screen and (max-device-width: 800px)" href="./DeepLens/small.css">
+  <!--
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
     crossorigin="anonymous">
+  -->
   <!-- Webfonts -->
   <script src="./DeepLens/anims.js"></script>
 
@@ -69,7 +73,7 @@
              浅景深效果的获取是摄影艺术中的重要技巧，往往依赖于昂贵的摄影设备（如单反相机），且一经拍摄后，
              无法调整聚焦点位置和模糊程度，实现再聚焦（Refocus）。 
           </p>
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/1.jpg", width=400>
             <p style="text-align:center">图<a id='#fig1'>1</a>. 浅景深效果示意图 </p>
           </div>
@@ -88,12 +92,12 @@
             在高质量的训练样本上学习后，该算法可以很大程度上消除图像伪影。<a href="#fig2">图2</a>与<a href="#fig3">图3</a>展示了DeepLens算法针对不同模糊尺度和聚焦位置的浅景深效果渲染结果。
           </p>
 
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/2.gif", width="600">
             <p style="text-align:center">图<a id="#fig2">2</a>. DeepLens 算法针对不同模糊尺度的渲染效果 </p>
           </div>
 
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/3.gif", width="600">
             <p style="text-align:center">图<a id="#fig3">3</a>. DeepLens 算法针对不同聚焦位置的渲染效果 </p>
           </div>
@@ -111,7 +115,7 @@
             以递归的方式实现低分辨率浅景深图像的上采样过程。
           </p>
 
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/3.jpg", width="650">
             <p style="text-align:center">图<a id="#fig4">4</a>. DeepLens 算法网络结构概览</p>
           </div>
@@ -121,7 +125,7 @@
             解码网络对特征不断上采样，并采用跳连的方式，集成相同分辨率的编码网络特征，从而补充网络丢失的细节特征。
             为了增网络对物体边缘的刻画能力，同时采用深度估计和前景分割数据库，以多任务的方式对网路进行训练。
           </p>
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/4.jpg", width="600">
             <p style="text-align:center">图<a id="#fig5">5</a>. 深度预测模块网络结构</p>
           </div>
@@ -134,7 +138,7 @@
             其中，卷积核预测网络根据图像深度为每一像素分别预测 1x1 的卷积核。
             浅景深效果的渲染则通过将预测的卷积核作用在所提取的特征中实现。
           </p>
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/5.jpg", width="600">
             <p style="text-align:center">图<a id="#fig6">6</a>. 滤镜模糊模块网络结构</p>
           </div>
@@ -144,7 +148,7 @@
             如<a href="#fig7">图7</a>所示，引导上采样模块在低分辨率和高分辨率图像中同时提取特征，并预测对应的空间权重图。
             该权重图可以有效的区分浅景深图像中的聚焦于散焦区域，为高低分辨率图像的融合提供指导。
           </p>
-          <div align="center">
+          <div class='fig' align="center">
             <img src="DeepLens/img/7.jpg", width="600">
             <p style="text-align:center">图<a id="#fig7">7</a>. 引导上采样模块网络结构</p>
           </div>
