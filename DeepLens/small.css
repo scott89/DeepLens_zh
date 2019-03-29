@@ -132,7 +132,7 @@ img,object,iframe
 .entry-wrapper >p, .fig> p, .sub_fig, .pub-bibtex, .abstract, .author
 {
     font-family: "roboto",sans-serif, "SimHei";
-    font-size: 15px;
+    font-size: 14px;
     line-height:2.0;
     letter-spacing: 1.5px;
 }
