@@ -76,7 +76,7 @@
           <div class='abstract' style="background-color: rgb(240,240,240); padding: 1px 10px">  
           <p style="color: #808080">
           <b style="color: rgb(0,0,0)">导读:</b>
-          大连理工大学与 Adobe Research 实验室联合提出基于深度学习的单目图像浅景深效果渲染算法。该算法不依赖额外的深度信息，
+          大连理工大学与 Adobe Research 实验室联合提出基于深度学习的单目图像浅景深效果渲染算法 (DeepLens)。该算法不依赖额外的深度信息，
           在特征空间进行滤镜模糊操作，实现了从图像到最终输出的端到端映射。
           </p>
           </div>
@@ -90,9 +90,19 @@
              浅景深效果的获取是摄影艺术中的重要技巧，往往依赖于昂贵的摄影设备（如单反相机），且一经拍摄后，
              无法调整聚焦点位置和模糊程度，实现再聚焦（Refocus）。 
           </p>
+          <!--
           <div class='fig' align="center">
             <img src="DeepLens/img/1.jpg", width=400>
             <p style="text-align:center">图<a id='fig1'>1</a>. 浅景深效果示意图 </p>
+          </div>
+          -->
+
+          <div class='fig' align="center" style="max-width:100%">
+              <div class='sub_fig'> <img src="DeepLens/img/4/0.jpg", style="max-width:100%", width=160><p>全清晰图像</p> </div>
+              <div class='sub_fig'> <img src="DeepLens/img/4/1.jpg", width=160><p>聚焦前景区域</p> </div>
+              <div class='sub_fig'> <img src="DeepLens/img/4/2.jpg", width=160><p>聚焦中部区域</p>  </div>
+              <div class='sub_fig'> <img src="DeepLens/img/4/3.jpg", width=160><p>聚焦背景区域</p> </div>
+              <p style="text-align:center">图<a id='fig1'>1</a>. DeepLens 算法对不同聚焦位置的浅景深渲染效果</p>
           </div>
 
           <p>

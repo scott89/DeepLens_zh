@@ -128,10 +128,24 @@ img,object,iframe
     padding-top: 0.5em;
 
 }
-.entry-wrapper >p, .fig> p, .pub-bibtex, .abstract, .author
+.entry-wrapper >p, .fig> p, .sub_fig, .pub-bibtex, .abstract, .author
 {
     font-family: "roboto",sans-serif, "SimHei";
     font-size: 18px;
     line-height:1.5;
     letter-spacing: 1.2px;
+}
+.entry-wrapper .sub_fig
+{
+    padding-left: 0px;
+    padding-right: 0px;
+    max-width: 25%;
+    margin-left: 0;
+    margin-right: 0;
+    display:inline-block;
+}
+.sub_fig p
+{
+    text-align: center;
+    font-size: 15px;
 }
